@@ -1,0 +1,7 @@
+python-dotenv
+fastapi
+langchain
+uvicorn 
+python-multipart
+setuptools
+- e.
