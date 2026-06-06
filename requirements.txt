@@ -5,3 +5,11 @@ uvicorn
 python-multipart
 setuptools
 - e.
+langchain-groq
+langchain-chroma
+chromadb
+langsmith
+langchain-huggingface
+sentence-transformers
+tiktoken
+langchain-community

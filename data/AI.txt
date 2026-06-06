@@ -1,0 +1,1335 @@
+Transformers and Large Language Models for Efficient Intrusion Detection
+Systems: A Comprehensive Survey
+Hamza Kheddara,∗
+aLSEA Laboratory, Department of Electrical Engineering, University of Medea, 26000, Algeria
+A R T I C L E I N F O
+Keywords:
+Anomalies detection
+Cyber-security
+Intrusion detection
+Large language model
+Natural language processing
+Transformers
+A B S T R A C T
+With significant advancements in Transformers and large language models (LLMs), natural language
+processing (NLP) has extended its reach into many research fields due to its enhanced capabilities in text
+generation and user interaction. One field benefiting greatly from these advancements is cybersecurity. In
+cybersecurity, many parameters that need to be protected and exchanged between senders and receivers
+are in the form of text and tabular data, making NLP a valuable tool in enhancing the security measures
+of communication protocols. This survey paper provides a comprehensive analysis of the utilization
+of Transformers and LLMs in cyber-threat detection systems. The methodology of paper selection and
+bibliometric analysis is outlined to establish a rigorous framework for evaluating existing research. The
+fundamentals of Transformers are discussed, including background information on various cyber-attacks
+and datasets commonly used in this field. The survey explores the application of Transformers in intrusion
+detection systems (IDSs), focusing on different architectures such as Attention-based models, LLMs like
+bidirectional encoder representations from Transformers (BERT) and generative pre-trained Transformer
+(GPT), CNN/LSTM-Transformer hybrids, emerging approaches like Vision Transformers (ViTs), among
+others. Furthermore, it explores the diverse environments and applications where Transformers and LLMsbased IDS have been implemented, including computer networks, internet-of-things (IoT) devices, critical
+infrastructure protection, cloud computing, software-defined networking (SDN), as well as in autonomous
+vehicles (AVs). The paper also addresses research challenges and future directions in this area, identifying
+key issues such as interpretability, scalability, and adaptability to evolving threats, and more. Finally,
+the conclusion summarizes the findings and highlights the significance of Transformers and LLMs in
+enhancing cyber-threat detection capabilities, while also outlining potential avenues for further research
+and development.
+1. Introduction
+In today’s swiftly evolving network ecosystem, characterized by the emergence of technologies like 5G and the widespread
+adoption of the Internet-of-things (IoT) [1], the potential for threats and vulnerabilities has expanded significantly. Consequently,
+concerns regarding network security are escalating. Network security attacks are diverse and continuously evolving, posing
+significant threats to the integrity, confidentiality, and availability of information systems. These attacks can be broadly categorized
+into various types, including malware, phishing, denial-of-service (DoS) attacks, man-in-the-middle (MitM) attacks, and advanced
+persistent threats (APTs) [2]. Malware encompasses viruses, worms, ransomware, and spyware that infiltrate systems to steal data,
+disrupt operations, or demand ransoms. Phishing attacks deceive users into revealing sensitive information through fraudulent
+emails or websites. DoS attacks overwhelm systems with excessive traffic, rendering services unavailable. MitM attacks intercept
+and manipulate communications between parties, while APTs involve prolonged and targeted cyber-espionage campaigns against
+specific organizations or individuals. To combat these threats, various attack prevention methods have been developed, each
+with its unique approach and effectiveness. These methods include firewalls, antivirus software, encryption, intrusion detection
+system (IDS) [3], intrusion prevention systems (IPS) [4], and information and event management (SIEM) [5] systems. Firewalls
+act as a barrier between trusted and untrusted networks, controlling incoming and outgoing traffic based on predefined security
+rules. Antivirus software detects and removes malicious software, while encryption ensures data confidentiality by converting
+information into unreadable code without the correct decryption key. IDS and IPS monitor network traffic for suspicious activities,
+with IDS alerting administrators of potential threats and IPS actively blocking malicious traffic. SIEM systems aggregate and
+analyze log data from various sources to detect and respond to security incidents in real-time. Among these, IDS has advanced
+significantly with machine learning (ML) and deep learning (DL) integration, enhancing host intrusion detection system (HIDS)
+and network intrusion detection system (NIDS) [3]. HIDS monitors individual devices, focusing on system logs and behaviors to
+detect threats like unauthorized file changes. However, it is limited to specific hosts. NIDS, conversely, analyzes network traffic
+to identify threats like distributed denial-of-service (DDoS) attacks and network scanning, offering a broader security perspective.
+artificial intelligence (AI) enhances both categories by analyzing vast data to recognize complex threat patterns, improving detection
+accuracy and adaptability to evolving threats. Their versatility stems from the abundance of network data available for training
+intrusion scenarios and crafting AI-driven IDS models. Furthermore, advancements in technology have reinforced computational
+capabilities, facilitating faster and more cost-effective model training. The widespread adoption of DL ensures precise model
+optimization through continuous self-learning.
+However, despite these advancements, current ML or DL-based IDS methods still encounter new challenges, as long as network
+technologies evolving, such as vulnerability to attacks on central entities, decreased system performance with larger user bases, and
+⋆
+The first is the corresponding author.
+kheddar.hamza@univ-medea.dz (H. Kheddar)
+ORCID(s):
+Kheddar et al.: Preprint submitted to Elsevier Page 1 of 34
+arXiv:2408.07583v1 [cs.CR] 14 Aug 2024
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Acronyms and Abbreviations
+Acc accuracy
+AI artificial intelligence
+APTs advanced persistent threats
+AS alert score
+AV autonomous vehicles
+BERT bidirectional encoder
+representations from
+transformers
+Bi-LSTM bi-directional long short-term
+memory
+CAN controller area network
+CANINE character architecture with no
+tokenization in neural encoders
+CGAN conditional generative adversarial
+network
+CIA compositional instruction attack
+CNN convolution neural network
+CTI cyber threat intelligence
+CV computer vision
+DDoS distributed denial-of-service
+DL deep learning
+DNN deep neural network
+DNS domain name system
+DoS denial-of-service
+DT decision tree
+F1 F1-score
+FAR false alarm rate
+FFNN feedforward neural network
+FL federated learning
+FPR false positive rate
+FR fooling rate
+FTP File Transfer Protocol
+GAN generative adversarial network
+GDPR general data protection
+regulation
+GMM Gaussian mixture model
+GPT generative pre-trained
+transformer
+GRU gated recurrent unit
+GSF genetically seeded flora
+HIDS host intrusion detection system
+HTTP HyperText Transfer Protocol
+ICMP Internet Control Message
+Protocol
+ICS industrial control system
+IDS intrusion detection system
+IG information gain
+IIoT industrial internet of things
+IMAP Internet message access protocol
+IoT Internet-of-things
+IoV Internet over vehicle
+IP Internet Protocol
+IPS intrusion prevention systems
+KLD Kullback-Leibler divergence
+LIME local interpretable
+model-agnostic explanations
+LLM large language model
+LSTM long short-term memory
+MAC media access control
+MCC Matthew’s correlation coefficient
+MCU micro-controller unit
+MHA multi-head attention
+MitM man-in-the-middle
+ML machine learning
+MLM masked language modeling
+MLP multilayer perceptron
+MQTT message queuing telemetry
+transport
+NAT network address translation
+NIDS network intrusion detection
+system
+NLP natural language processing
+P2SQL prompt-to-SQL
+PCA principal component analysis
+PCAP packet capture
+PDF probability density function
+Pre precision
+R2L remote-to-local
+RCE remote code execution
+Rec recall
+ReLU rectified linear unit
+RL reinforcement learning
+RNN recurrent neural network
+SCADA supervisory control and data
+acquisition
+SDN software-defined network
+seq2seq sequence-to-sequence
+SHAP Shapley additive explanations
+SIEM information and event
+management
+SMOTE synthetic minority oversampling
+technique
+SMTP Simple Mail Transfer Protocol
+SNMP Simple Network Management
+Protocol
+SOTA state-of-the-art
+SQL Structured Query Language
+SwinT shifted windows Transformer
+TCP Transmission Control Protocol
+TL transfer learning
+TLS transport layer security
+TNN-IDS Transformer neural
+network-based IDS
+TTL time-to-live
+U2R user-to-root
+UAV unmanned aerial vehicles
+UDP User Datagram Protocol
+URL uniform resource locator
+URLLC ultra-reliable low latency
+communications
+V2C vehicles-to-cloud
+V2X vehicle-to-everything
+ViT vision Transformer
+WAF web application firewall
+XAI explainable AI
+XGBoost feature screening strategy based
+on eXtreme gradient boosting
+XSS cross-site scripting
+inefficiencies in traditional centralized processing [6]. Additionally, in real-world scenarios, the attack sample data generated by an
+organization’s or enterprise’s network system tends to be of lower quality for training purposes. Consequently, the IDS models are
+limited in their detection capabilities based on this data. Hence, there is a critical necessity to develop an efficient IDS method [7].
+Despite its strong adaptability, ML or DL-based exhibits high false positive rates (FPRs) in domains where the feature distributions
+of malicious flows overlap with those of benign flows. Many researchers hypothesize that the limitations of conventional AI-based
+IDS algorithms stem from their utilization of individual flows as input data, restricting the classifier’s ability to model feature
+distributions within a single flow [8]. They claim that this constraint can be overcome by employing sequences of flows, enabling
+the classifier to better capture the distribution of a flow relative to others.
+Current approaches detect pattern changes induced by attacks by learning the normal pattern of a sequence, typically extracted
+solely from network data frames like log files and host IDs. Consequently, if the target sequence for detection contains only a minimal
+number of attacks, the deviation from the normal pattern will be subtle, posing challenges for detection. Therefore, there is a need
+for a new detection method to address such scenarios. While recurrent neural network (RNN) and long short-term memory (LSTM)
+models are commonly employed to grasp time series characteristics [9, 10], they suffer from decreased performance as sequences
+lengthen. Given the inherently sequential nature of network traffic data, new sequential AI models, like the Transformer network
+model [11, 12], present a logical solution to this issue. Transformers and their variants, leveraging self-Attention mechanisms
+Kheddar et al.: Preprint submitted to Elsevier Page 2 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+[11], have excelled in natural language processing (NLP) tasks, including text classification, dialogue recognition, and machine
+translation. Inspired by the Transformer’s prowess in handling ordered data sequences, researchers have explored its applicability in
+intrusion and anomaly detection, demonstrating its effectiveness in various scenarios. Since network intrusion typically unfolds over
+time, most existing models lack the capability to capture time series features, resulting in information loss. The Attention mechanism
+of the Transformer, however, can effectively learn the temporal correlation of network intrusion data, thereby enhancing the accuracy
+of network intrusion detection.
+The potential application of these advancements lies in their utilization with various cyber-data, including computer logs and
+network packets, can be structured as text and conceptualized as distinct languages. A modest yet expanding body of literature
+has showcased successful applications of NLP to cyber data, such as identifying red team attack within authentication logs. Once
+attacks are accurately identified, straightforward responses like quarantining or shutting down affected systems become feasible.
+Furthermore, leveraging windows event logs enables each computer to autonomously execute its response without necessitating
+feedback from other network sources. This autonomy is especially valuable in tactical networks, where connections may be
+unreliable and exhibit low throughput [13]. Transformers are main component of large language model (LLM) models due to
+their ability to capture complex dependencies in sequential data. For example, generative pre-trained transformer (GPT) [14]
+and bidirectional encoder representations from transformers (BERT) models [12], use Transformers to generate coherent and
+contextually relevant text. By leveraging Attention mechanisms, Transformers enable LLM systems to understand and manipulate
+data at a more nuanced level, leading to more realistic and diverse outputs in tasks such as text generation, image generation, and
+speech synthesis [15]. Thus, the LLM could be adapted at learning the benign patterns found within network traffic sequences,
+making it well-suited to detect alterations in network traffic patterns induced by even a minimal number of attacks [16].
+This survey aims to summarize the cutting-edge IDS based on Transformers and LLM advances in AI techniques, which offer
+promising alternatives to address the weaknesses of existing ML and DL-based IDS state-of-the-art (SOTA) strategies. By reading
+this survey, the author aims to assist researchers in understanding the concept of enhancing IDS with Transformers and LLMs, as
+well as shedding light on future directions and perspectives.
+1.1. Existing reviews and our contributions
+Employing Transformers, and specifically large LLMs, although a trending research topic, is still in its early stages. Consequently, there are few recent reviews, and most of them are preprints that are not yet published. These reviews summarize how
+NLP algorithms could be exploited for more effective detection and mitigation of insider threats in cybersecurity. However, they
+tend to focus strongly on specific aspects: the use of generative AI and LLMs to strengthen resilience and security, as seen in
+[17, 18]; the mitigation of insider threats using NLP and DL, as discussed in [19]; the application of LLMs in cybersecurity tasks
+such as vulnerability detection and malware analysis, highlighted in [20, 21]; or examining the dual impact of LLMs on security
+and privacy, as explored in [22]. These reviews are generic and cover only a few works in each area of cybersecurity. In contrast,
+our survey provides a comprehensive review of empowering IDS using Transformers, which are the main component of LLMs,
+along with some pre-trained LLMs models such as GPT and BERT. Moreover, this survey may assist researchers in building their
+own LLMs tailored to intrusion detection by providing possible configurations of the Attention layer and existing Transformer and
+LLMs models. The key contributions of this survey can be summarized as follows:
+• The survey delves into the background of IDS and covers various types of attacks. It also provides an in-depth taxonomy of
+the different IDS techniques, including HIDS and NIDS, employed to secure diverse environments.
+• The survey offers an extensive taxonomy of different Transformer models applicable to strengthen various IDS techniques,
+including Attention, CNN/LSTM-Transformer, vision Transformer (ViT), GAN-Transformer, GPT, BERT and their variants,
+among others.
+• It presents a detailed classification of various Attention mechanisms and their possible configurations with traditional DL
+models, such as convolution neural network (CNN).
+• The survey reviews the latest SOTA schemes proposed for different environments and applications, such as computer
+networks, the IoT and industrial internet of things (IIoT), critical infrastructure, cloud and software-defined network (SDN),
+and autonomous vehicless (AVs).
+• Finally, the survey highlights existing research challenges and suggests potential future directions for the field of Transformers
+and LLM-based IDS.
+Table 1 provides a summary comparison of our survey with existing LLM-based cybersecurity surveys, focusing on content and
+survey structure. It is evident that our survey thoroughly addresses all relevant areas of Transformers and LLM-based IDS, including
+background, metrics and datasets, existing Transformers and LLMs models used in IDS, applications of LLM-based IDS, research
+gaps, challenges, and future directions. In contrast, most other surveys either do not cover these areas or only partially address
+them. Consequently, our survey can be considered comprehensive in its coverage of the various fields related to Transformers and
+LLM-based IDS research.
+1.2. Research questions and objectives
+To streamline this survey, the author defined five research questions in Table 2. By following the study’s roadmap, readers will
+grasp the key insights and comprehend the study’s objectives. The table offers a structured summary of the research questions (RQ)
+Kheddar et al.: Preprint submitted to Elsevier Page 3 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Table 1
+Comparison with existing Transformers and LLM-based IDS. The markers , G#, and # denote that the particular field has been attended
+to, partly addressed, and overlooked, respectively.
+CT Reference Year NRTLIP Description of the similarity with our survey Distinction from our survey
+[17] 2024 0
+Introducing advanced strategies utilizing Generative AI and LLMs to bolster resilience and
+security in critical infrastructure
+Focuses solely on cyber threats to critical infrastructure, with
+no discussion on intrusion detection or Transformers and
+their related work.
+[18] 2024 10
+The review offers a comprehensive analysis
+of the use of Generative AI and LLMs in
+cybersecurity.
+Focus on software and hardware general threat. A few
+discussions on intrusion detection or Transformers and their
+related work.
+Content
+[19] 2024 2
+Recommends utilizing DL and NLP for more
+effective detection and mitigation of insider
+threats in cybersecurity, highlighting the importance of incorporating time-series techniques.
+It has a specific emphasis on traditional ML methods and
+their shortcomings in adequately handling the complexities of
+insider threats. Few works related to IDS have been reviewed.
+[20] 2024 10
+Emphasizes the various applications of LLMs
+in cybersecurity tasks, including vulnerability
+detection, malware analysis, and the detection
+of intrusions and phishing attempts.
+Discussed few IDS techniques that utilize LLMs. It primary
+focus on software and system security, blockchain, and
+hardware.
+[21] 2024 17
+This paper presents a systematic literature
+review of many studies on the application of
+LLMs in cybersecurity
+Covers a wide range of LLM applications in cybersecurity,
+with only a few IDS techniques reviewed. No IDS work
+related to Transformers is included.
+[22] 2024 3
+Examines the dual impact of LLMs on security
+and privacy, emphasizing their ability to improve cybersecurity and data protection while
+also introducing new risks and vulnerabilities.
+Examine the positive impacts of LLMs on security and
+privacy, the potential risks and threats associated with their
+use, and the inherent vulnerabilities within LLMs. A few IDS
+papers are discussed.
+Ours,
+2024 2024 103
+The proposed work reviews GPT, BERT, and
+their derivatives LLMs, in the context of cybersecurity and their applications.
+Our survey uniquely focuses on IDS schemes using Transformers (Attention mechanisms, CNN/LSTM, ViT, GAN,
+LLMs like GPT and BERT), providing comprehensive coverage of IDS, LLMs, metrics, datasets, and Transformer and
+LLM-based applications.
+Ref. Background Bibliometrics Transformers models-based IDS LLMs-based IDS Preproc. Datasets Metrics Applications Gaps & FD
+(IDS, LLM) analysis Attention CNN/LSTM ViT GAN GPT BERT (IDS)
+Structure
+[17] G# # # # # # # # # G# G# # G#
+[18] G# # # G# # # G# # # # # G#
+[19] G# # # # # # # # # G# # G#
+[20] # # # # # G# G# # G#
+[21] G# # # # # # # # #
+[22] G# # # # # G# # # # # G#
+Our
+Abbreviations: multi-modal (MM), future direction (FD), number of reviewed Transformer-and LLM-based IDS paper (NRTLIP)
+Table 2
+Research questions for IDS utilizing Transformers and LLMs.
+RQ# Question Objective
+RQ1 What drives the utilization of Transformers and LLMs in IDS, and what
+benefits do they provide compared to traditional ML/DL models?
+Gain insight into why Transformers and LLMs are employed in IDS and
+distinguish their distinct advantages over conventional ML/DL models.
+RQ2
+What are the current methodologies employing Transformers and LLMs
+in IDS for various attack types? How successful are these approaches in
+identifying intrusions?
+Identify and comprehend cutting-edge techniques employing Transformers
+and LLMs in IDS across a spectrum of attack types.
+RQ3
+How do IDS methods based on Transformers and LLMs compare with each
+other and with traditional methods in terms of accuracy and efficiency in
+detecting intrusions?
+Compare and evaluate the performance of various IDS methods based on
+Transformers and LLMs, contrasting them with traditional techniques.
+RQ4
+How can we improve the interpretability of IDS models based on Transformers and LLMs? What challenges exist, and what are the current
+research trends in enhancing their explainability?
+Evaluate the transparency of IDS models based on Transformers and LLMs,
+outline interpretability challenges, and examine ongoing research aimed at
+improving their clarity.
+RQ5 What are the primary applications of IDS employing Transformers and
+LLMs in diverse network settings?
+Understand the practical implementations and applications of IDS utilizing
+Transformers and LLMs in diverse network environments.
+RQ6
+What are the critical areas needing additional research in Transformer
+and LLM-based IDS? What potential advancements could emerge in this
+domain?
+Identify future potential advancements and essential areas for further
+research in IDS utilizing Transformers and LLMs.
+and their associated motivating factors. Each row in the table addresses a specific research question, offering a concise view of the
+goals guiding research in automated technologies for Transformers and LLMs-based IDS.
+1.3. Survey methodology
+To identify and review existing studies on Transformers and LLM-based ASR, a comprehensive search was conducted across
+several leading publication databases renowned for their high-quality scientific research. The primary search was carried out in
+Kheddar et al.: Preprint submitted to Elsevier Page 4 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Scopus, which systematically includes databases such as Web of Science, Elsevier, IEEE, ACM Digital Library, Wiley, and IET
+Digital Library, among others.
+Articles published between 2017 and 2024 were given priority. However, older publications were also considered when
+necessary to provide a historical context, dataset, metrics, etc. The survey focused on computer science and engineering studies
+from databases including IEEE Xplore, ScienceDirect, Wiley, Springer, and Taylor & Francis. Additionally, considering the recent
+and trending nature of the topic, high-quality pre-prints from arXiv, SSRN, and TechRxiv were selected. Only articles written in
+English were included in the final analysis. Key search terms used in the abstract, article title, and keywords led to the formulation
+of the following query:
+Selected papers = FROM (
+"Abstract" || "Title" || "keywords")
+SELECT (
+References WHERE keywords = (Transformer || LLM ||
+NLP ) & ( Cyberthreat || IDS ))
+The symbols & and || signify the logical operations AND and OR, respectively. Due to the overlap of the term "Transformers"
+with electrical network equipment, a manual filtering process was applied to exclude irrelevant papers. The final number of selected
+papers on IDS based purely on Transformers and LLMs is 102. Figure 1 provides more details about the involved research papers
+in terms of paper type, domain conducted, and distribution of papers based purely on Transformers and LLMs. It is obvious that
+Transformers and LLM-based IDS has emerged as a recent and rapidly growing field, with a notable surge in publications starting
+from 2022. Moreover, the inclusion of 27 pre-prints among the 148 cited papers underscores the trending nature and active research
+pursuit in this domain.
+% N papers Total 156
+Transformer and LLM for IDS 66.02 103
+IDS only 4.48 7
+LLM only 3.84 6
+Other 8.33 13 1
+Surveys and reviews 17.94 28 7
+published 122
+pre-print 27
+2017 2
+2018 1
+2019 1
+2020 3
+2021 7
+2022 25
+2023 53
+2024 10
+66.02% 4.48 %
+3.84. 4%
+8.33. 8%
+17.94% Transformer and LLM
+for IDS
+IDS only
+LLM only
+Other
+Surveys and reviews
+2 1 1
+3
+7
+25
+53
+10
+0
+10
+20
+30
+40
+50
+60
+2017 2018 2019 2020 2021 2022 2023 2024
+(a) (b)
+Figure 1: Bibliographic Statistics: (a) Analysis of research field and article type distribution from all references (156 papers). (b)
+Statistical distribution of 102 research papers on Transformers and LLMs for IDS (2017-2024).
+To assess the quality and impact of academic work, several metrics are considered in writing the survey: H-index, Q1 ranking,
+impact factor of the journal, average citations, and database indexing of the paper. These metrics ensure broader visibility,
+accessibility, and credibility. Additionally, highly important papers are discussed extensively in the text and their findings are
+reported in the tables, while lower-quality papers are only discussed in the tables.
+1.4. Survey organization
+The remainder of this survey is organized as follows: Section 2 summarizes the essential fundamentals, including datasets,
+metrics, various investigated attacks, pre-processing steps, and a taxonomy of existing IDS techniques. Section 3 details the
+principles of employing Transformers in IDS and reviews numerous related studies. Section 4 explores the use of LLMs in IDS,
+accompanied by a review of several studies. Section 5 highlights the most significant applications investigated in the SOTA research.
+Section 6 provides real-world case studies for both Transformer-based and LLM-based IDSs systems. Section 7 discusses the open
+challenges facing Transformer and LLM-based IDS schemes and suggests potential future contributions. Section 8 provides a
+conclusion for this survey. Figure 2 offers a detailed roadmap for this survey and lists the key topics covered in the study.
+2. Background
+This section covers the key elements of IDS, starting with intrusion detection methods, followed by an overview of attack
+categories, the datasets used for evaluation, and the metrics employed to measure IDS performance.
+2.1. Intrusion detection
+This part elucidates the application of DL in IDS for detecting cyber-attacks, detailing procedures that can be applied universally
+across various environments. Figure 3 presents the overall architecture of a generic detection system, which consists of two main
+phases: data pre-processing and IDS framework development. The IDS framework can be either signature-based or anomaly-based,
+followed by training and testing. The following sections provide detailed information about each category.
+2.1.1. Data pre-processing
+Computational efficiency can be improved and memory usage decreased by downsizing the dataset and removing less significant
+features. This can be achieved by dropping some dataset’s columns that are expected to be unaffected by the attacks being studied,
+such as media access control (MAC) addresses, timestamp, among others. Encoding feature attributes in processed data can be
+Kheddar et al.: Preprint submitted to Elsevier Page 5 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+• Existing reviews and our contrib.
+• Research questions and object.
+• Survey methodology
+• Survey organization
+• Datasets, and metrics
+• Attacks types
+• Pre-processing
+• Taxonomy of IDS tech
+• Attention-based
+• CNN/LSTM-Trans.-based
+• ViT-based
+• GAN-Trans.-based
+• Other Trans.-based
+• Encoder-only-based
+methods
+• Decoder-only-based
+methods
+• Computer network
+• Internet-of-things
+• Critical infrastructure
+• Cloud and SDN
+• Autonomous vehicles
+Transformers
+challenges
+LLMs challenges
+Perspectives and
+future directions
+(1)
+INTRODUCTION
+(2)
+BACKGROUND
+(3)
+TRANSFORMERS
+IN IDS
+(5)
+ENVIRONMENTS
+AND APPS
+(6)
+REAL-WORLD
+CASE STUDIES
+(4)
+LLM IN IDS
+(7)
+CHALLENGES
+AND FUTURE
+DIRECTIONS
+(8)
+CONCLUSION
+• Transformerbased method
+• LLM-based
+method
+Figure 2: A roadmap outlining the primary sections and essential concepts discussed in this survey.
+accomplished using various techniques, depending on the data’s nature. Common methods include label encoding, suitable for
+categorical data when categories are ordinal; one-hot encoding, ideal for categorical data lacking ordinal relationships; and binary
+encoding, which combines benefits from both label and one-hot encoding. These techniques offer versatile ways to represent
+categorical features effectively in ML models. z-score normalization, is a technique used to standardize numerical features in a
+dataset. It involves subtracting the mean (𝜇) of the feature from each data point and then dividing by the standard deviation (𝜎) of
+the feature. Mathematically, the formula for z-score normalization is represented as:
+𝑧 =
+𝑥 − 𝜇
+𝜎
+(1)
+Where, 𝑥 is the original value of the feature, 𝜇 is the mean of the feature, 𝜎 is the standard deviation of the feature, and 𝑧 is the
+standardized value, also known as the z-score. This transformation ensures that the standardized feature has a 𝜇 of 0 and a 𝜎 of
+1, which is particularly useful for algorithms that assume normally distributed data or require features to be on a similar scale for
+proper convergence. It also facilitates direct comparison and analysis, while also reducing data bias and enhancing stability and
+reliability. The classes of data are evaluated to determine if they are balanced or not. If necessary, k-means undersampling [23]
+is employed to expedite computation when data are balanced. k-means is a commonly used clustering algorithm that divides a
+dataset into k distinct clusters, reducing data size without losing meaningful information by minimizing the distance between data
+points and their cluster centers. However, k-means is sensitive to initial cluster centers and noisy data. The mini k-means algorithm
+[24], an improved version, mitigates these issues by selecting random points as initial cluster centers, assigning data points to
+the nearest centers, and recalculating centroids until convergence is achieved or maximum iterations are reached. The imbalance
+data could skew the training towards the more abundant samples, under-training the less represented attack types and reducing
+the model’s overall applicability. To address this, researchers used oversampling techniques to balance the dataset, ensuring the
+model is adequately trained on all attack types. Synthetic minority oversampling technique (SMOTE) is a widely used method to
+address data imbalance by generating synthetic samples for minority classes [25], thus balancing the dataset. It works by selecting
+a sample from the minority class, finding its 𝑘 nearest neighbors, and generating new synthetic samples by interpolating between
+them. While the mentioned data pre-processing steps are common in DL-based IDS, they are not necessarily used all at once for
+the same method. Additionally, the data can be converted to a 2D format to be processed as an image, allowing the application of
+existing 2D DL algorithms such as ViT and Inception pre-trained models.
+2.1.2. Taxonomy of IDS techniques
+After pre-processing, the researchers apply various DL algorithms to build an efficient DL-based IDS model. This phase involves
+model training and optimization, including cross-validation, enhanced convergence tools, and grid search techniques to assess the
+model’s performance. The DL-based IDS frameworks can be categorized into two types, depending on the availability of attack
+type information:
+(a) Signature-based model: Are detection techniques in IDS, which involve matching network traffic or system actions against
+a database of attack signatures to trigger alerts upon detection. It outlines the process of comparing observed data 𝐷 with a
+signature database 𝑆 = {𝑠1
+, 𝑠2
+, ..., 𝑠𝑛
+} using a matching function 𝑀𝑎𝑡𝑐ℎ(𝑆, 𝐷). While effective against known attacks, this
+method has limitations in detecting new or mutated attacks and may not be suitable for resource-constrained environments like
+IoT. Research explores pattern-based detection methods as alternatives to address these challenges. Experts evaluate the trained
+model’s performance on test instances. If the results are unsatisfactory, techniques such as principal component analysis (PCA)
+may be applied as a corrective measure to reduce the complexity of the data and enhance interpretability, thereby improving the
+performance of DL algorithms. Once the results meet the accuracy criteria, the model becomes capable of effectively identifying
+and distinguishing various attack types. ViT and pre-trained models such as Inception are widely used for their ability to capture
+Kheddar et al.: Preprint submitted to Elsevier Page 6 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Start Drop useless
+columns
+Features
+encoding
+Z-scoring
+standardization Balanced ? K-means data
+sampling
+Data oversampling
+(SMOTE, ..)
+Image
+generation
+1D models
+(LSTM, GPT, BERT,..)
+Grid search
+Cross-validation Stop
+Attack signature
+dataset
+Known
+Signature ?
+No
+Yes
+Yes Attack type
+identified
+Data samples
+(Packets)
+- Distance metric, or
+- Statistical thresholding, or
+- Probability density estimation
+> Threshold ?
+No Yes
+(Zero-day attack)
+Attack signature update
+Stop
+Benign data
+No
+Signature-based detection
+Anomaly-based detection
+Pre-processing
+g
+2D models (Vision
+Transformers, Inception,..)
+Figure 3: A standard framework diagram for a DL-based IDS consists of three stages: (i) preprocessing, (ii) signature-based detection,
+and (iii) anomaly-based detection.
+intricate patterns and features from network traffic data. However, several DL algorithms are tailored for packet classification rather
+than 2D image representation. These include various 1D DL techniques such as LSTM, RNN, 1D CNN, BERT, and others. Tools
+like AutoKeras [26] and H2O [27] automate model-building, ensuring optimal architecture selection and hyperparameter tuning.
+This simplifies the complex task of designing an effective IDS. To enhance the performance of DL algorithms, experts employ
+optimization techniques such as, but not limited to, AdamW and BO-TPE [28]. AdamW improves convergence by optimizing
+training trajectories, while BO-TPE selects optimal hyperparameters, fine-tuning algorithm configurations.
+(b) Anomaly-based models: Are detection techniques employed when signature-based IDS techniques fail to detect zero-day
+threats. This technique monitors normal behavior to detect deviations, alerting anomalies beyond predefined thresholds without
+classifying specific attacks. Techniques such as statistical thresholding utilize the mean (𝜇) and standard deviation (𝜎), employing a
+threshold (Threshold = 𝜇+𝑘⋅𝜎) to detect attacks. Distance metrics measure dissimilarities between observed (𝑂) and baseline (𝐵)
+behaviors, often using Euclidean distance. Probability density estimation, like Gaussian mixture model (GMM), models normal
+behavior and computes anomaly scores inversely to probability density function (PDF). While ML/DL models learn normal
+and attack behaviors, establishing standard profiles proves more effective than solely identifying known attacks. Anomaly-based
+techniques excel in detecting new threats but struggle with establishing accurate baseline profiles. Once an attack is detected using
+anomaly-based techniques, it becomes a known attack, as these techniques update the signature dataset with the new signature of
+the detected threat. Anomaly-based techniques often result in higher false alarm rate (FAR). Research addresses this challenge by
+employing ML/DL to construct robust normal behavior profiles, utilizing advanced methods such as meta-classifiers and hybrid
+feature selection [29].
+2.2. Attack categories, datasets, and metrics
+Various datasets in IDS research cater to diverse network environments (e.g., network, host, industrial control system (ICS),
+IoT, cloud, edge, smart grid), encompassing a wide array of attack types categorized as follows:
+• DoS: Attacks aim to render systems or networks inaccessible. Examples include Transmission Control Protocol (TCP)/User
+Datagram Protocol (UDP) flooding, Internet Control Message Protocol (ICMP) Smurf/ping of death, IP teardrop, UDPstorm,
+domain name system (DNS) amplification, TCP SYN/ACK flood, and HyperText Transfer Protocol (HTTP) Slowloris.
+• Remote-to-local (R2L): Remote attacks exploit vulnerabilities to gain local access, targeting protocols like File Transfer
+Protocol (FTP), Internet message access protocol (IMAP), HTTP, Simple Mail Transfer Protocol (SMTP), DNS, X11, and
+Simple Network Management Protocol (SNMP), with attacks like FTP_write, phf, and SNMPgetattack.
+Kheddar et al.: Preprint submitted to Elsevier Page 7 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+• User-to-root (U2R): Exploits system vulnerabilities to escalate privileges, targeting protocols such as UDP, TCP, Perl,
+Structured Query Language (SQL), and HTTP, with attacks like buffer_overflow, rootkit, HTTPtunnel, and SQLattack.
+• PROBE: Scans networks for vulnerabilities using tools like IPsweep, nmap, Portsweep, Satan, mscan, and saint to gather
+information for potential future exploitation.
+• Enduring: Persistent weaknesses in software, hardware, networks, or practices vulnerable to exploits over time. These
+vulnerabilities persist despite technological advancements and security measures, exploited for attacks like ransomware and
+phishing, demanding ongoing vigilance, updates, and robust security practices in IDS.
+For example, the work in [30] studies the vulnerability of the controller area network (CAN) protocol to various attacks, including
+flood attacks, fuzzy attacks, spoofing attacks, and replay attacks. Flood attacks, which fall under either DoS or DDoS categories.
+Fuzzy attacks are categorized as PROBE attacks. Spoofing attacks, which can include Internet Protocol (IP) spoofing, DNS spoofing,
+email spoofing, etc., are classified based on context as either R2L or U2R attacks. Replay attacks, being a type of man-in-the-middle
+attack, fall within the R2L category.
+Generally, the intrusion attacks are either collected from real networks or generated from testbeds and stored as datasets. Our
+previous work in [3] provided comprehensive insights into numerous IDS datasets. However, this survey introduces additional
+datasets specifically utilized in research involving Transformers and LLM-based IDS, extending the work already reviewed in this
+survey with further details cited herein. Table 3 offers a detailed overview of each dataset, including the number of features, duration
+of the attack, number of samples, attack/benign ratio, whether the dataset is labeled, suitable scenarios, related works, attack types,
+availability links, and the SOTA AI usage (Transformers or LLMs).
+Various evaluation metrics have been employed to assess the performance of Transformers and LLM-based IDS in detecting
+various categories and types of attacks detailed in the datasets discussed (Table 3). Common metrics like accuracy (Acc), recall
+(Rec), precision (Pre), and F1-score (F1) are frequently applied in general DL tasks, with their definitions available in [10, 31, 32].
+Below is a summary of additional metrics specifically used for evaluating Transformers and LLM-based IDS.
+• Matthew’s correlation coefficient (MCC): is a measure of the quality of binary classifications. It considers true positives,
+true negatives, false positives, and false negatives, providing a balanced assessment even when classes are of very different
+sizes. Mathematically, the MCC is defined as [33]:
+MCC = TP ⋅ TN − FP ⋅ FN
+√
+(TP + FP)(TP + FN)(TN + FP)(TN + FN)
+(2)
+Where TP, TN, FP, and FN indicate true positives, true negatives, false positives, and false negatives, respectively. The MCC
+ranges from -1 to 1, where: -1 indicates perfect disagreement between the predicted and actual classifications, 0 indicates no
+better than random classification, and 1 indicates perfect agreement between the predicted and actual classifications.
+• Fooling rate (FR): is an essential measure for evaluating the effectiveness of adversarial attacks. It quantifies the proportion
+of data samples that experience a shift in the model’s predicted label following adversarial manipulation (as shown in Equation
+7). This metric holds significant importance in assessing adversarial attacks, especially in targeted scenarios, where it indicates
+the percentage of samples successfully misclassified as the desired target label.
+FR =
+Number of samples with changed predictions
+Total number of adversarial samples
+(3)
+• Alert score (AS): the baseline scenario represents the "normal activity" utilized to compute the alert scores. This scenario
+does not involve any attacks and was not included in the training data. The alert score for each log is determined as follows:
+AS =
+Score − Max baseline score
+Baseline standard deviation
+(4)
+The Score is the anomaly score of the log being evaluated, while the Max baseline score and Baseline standard deviation
+come from the baseline scenario’s anomaly scores. An alert score of one indicates the log is one standard deviation above
+the maximum baseline score. The threshold for detecting attacks can be adjusted according to operational needs: higher to
+reduce false positives, and lower to reduce false negatives. This threshold can also be fine-tuned over time based on practical
+experience and the specific network environment [13].
+Kheddar et al.: Preprint submitted to Elsevier Page 8 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Table 3
+Analyzing current Internet datasets for the evaluation of Transformers and LLMs-based IDSs capabilities. The symbol indicates that
+a specific AI algorithm has utilized the dataset, while # indicates that no AI algorithm has used the dataset.
+Characteristics Initial usage of the dataset Availability
+Dataset F S/DoA ABR (≈) Attacks types L? SS BERT GPT Transf. LSTM UI Link
+5GC PFCP [34] 36 16h – DoS Yes 5G core IDS # # # [35, 36] Yes1
+In-Vehicle 4 8.69 M 1:11 Flooding, fuzzy, Spoofing, Replay Yes AV IDS # # # [37] Yes2
+MQTTset [38] 33 331 K 1:1
+Legitimate, slowite,
+bruteforce, malformed
+data, flooding, DoS
+Yes IoT IDS # # [39] Yes3
+OTIDS 4 4.6 M 1:1 DoS, Fuzzy, Impersonation Yes AV IDS # # # [40] Yes4
+NAB [41] – 0.36 M 1:315 Spatial and temporal
+anomalies Yes Time Series
+Anomaly IDS # # # [42] Yes5
+BGL [43] 2 4.7 M 1:13 Failures, anomalies No Log anomaly
+IDS # # [44] Yes6
+Car-Hacking [45] 1 16.5 M 1:6 DoS, fuzzy, spoofing
+gear, spoofing RPM Yes AV IDS # # # [30, 46] Yes7
+NVD 8 28 K – Software vulnerabilities Yes
+Prioritization
+and attacks
+prediction
+ # # [47] Yes8
+ECU-IoHT 4 11.2 K 4:1
+Smurf, Nmap Port
+Scan, ARP Spoofing,
+and DoS
+Yes
+Cyberattacks
+on Internet of
+health things
+ # # [33] Yes9
+CIDDS-001large 92 28 M 1:9 DoS, PortScan,
+PingScan, BruteForce Yes Flow network
+intrusion # # # [8] Yes10
+CSIC 2010 31 97 K 2:3 Zed attack proxy, w3af,
+request typo errors No Web attacks # # # [48] Yes11
+HDFS – 11 M 1:663 Failures, anomalies No Log anomaly
+IDS # # # [49] Yes12
+SMD [50] – 1.4 M 1:25 Failures, anomalies Yes Internet
+server
+# # # [51] Yes13
+X-IIoTID [52] 68 821 K 1:1
+Scanning, websocket
+fuzzing, discovering,
+Brute force, ..etc.
+Yes IIoT IDS # # # [53] Yes14
+WUSTL-IIoT2021 41 1.19 M 1:13
+Command injection,
+DoS, reconnaissance,
+backdoor
+Yes IIoT IDS # # # [54] Yes15
+syscall_args 64 576 K – Web requests Yes Web IDS # # [55] Yes16
+Abbreviations: Features (F); duration of the attack (DoA); Samples (S); attack/benign ratio (ABR); labeled (L); suitable scenarios (SS); multi-stage attacks (MSA);
+anonymized Internet traffic (AIT); Used in (UI).
+3. Taxonomy of Transformers in IDS
+This section categorizes the usage of Transformers in IDS based on their detection approaches, including Attention-based
+methods, CNN/LSTM-Transformer methods, ViT methods, GAN-Transformer methods, and LLM methods such as GPT-based and
+BERT-based approaches. Table 4 provides a comprehensive comparison between Transformers and LLMs, detailing their suitability
+for various problem scenarios, as well as highlighting the advantages and disadvantages associated with each algorithm. Table 5
+summarizes various research findings on Transformer-based IDS schemes, including the dedicated tasks, comparison methods,
+datasets used, obtained results, and improvements achieved.
+1https://zenodo.org/records/7888347#.ZFejbNJBxhE
+2https://ieee-dataport.org/open-access/car-hacking-attack-defense-challenge-2020-dataset
+3https://www.kaggle.com/datasets/cnrieiit/mqttset
+4https://ocslab.hksecurity.net/Dataset/CAN-intrusion-dataset
+5https://github.com/numenta/NAB
+6https://github.com/logpai/loghub
+7https://ocslab.hksecurity.net/Datasets/car-hacking-dataset
+8https://nvd.nist.gov/
+9https://www.sciencedirect.com/science/article/abs/pii/S1570870521001475
+10https://github.com/markusring/CIDDS?tab=readme-ov-file
+11https://www.kaggle.com/datasets/ispangler/csic-2010-web-application-attacks
+12https://github.com/logpai/loghub/tree/master/HDFS
+13https://github.com/NetManAIOps/OmniAnomaly
+14https://ieee-dataport.org/documents/x-iiotid-connectivity-and-device-agnostic-intrusion-dataset-industrial-internet-things
+15https://www.cse.wustl.edu/~jain/iiot2/index
+16https://zenodo.org/record/4091287#.X4hhGNjpNQI
+Kheddar et al.: Preprint submitted to Elsevier Page 9 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Table 4
+Comparison of various Transformers and LLM models applied for IDS field.
+Algorithm Problem Scenario Advantage Disadvantage
+CNN-Transformer Used for combining spatial feature
+extraction with sequential modeling
+Captures both local and global patterns in
+data, improving detection accuracy
+Computationally intensive due to combining
+two complex models
+BERT Applied for analyzing network traffic
+data for anomaly detection
+Leverages bidirectional context for better understanding of data patterns
+Requires large amounts of data for fine-tuning
+and significant computational resources
+RoBERTa
+Fine-tuned for anomaly detection in
+network traffic using robustly optimized BERT approach
+Improved performance over BERT due to enhanced training techniques
+Even higher computational requirements and
+data needs compared to BERT
+GPT
+Generates responses based on network behavior patterns for identifying
+anomalies
+Effective in generating realistic sequences, useful for simulation and detection
+May struggle with understanding context in
+bidirectional sense compared to BERT
+Vision
+Transformer
+Adapts vision-based Transformer
+models for network traffic
+visualization and anomaly detection
+Excellent at capturing intricate patterns in
+high-dimensional data
+High computational cost and requires large
+datasets for training
+Self-Attention Focuses on relevant parts of the input
+data for anomaly detection
+Improves detection by focusing on the most
+important parts of the data
+Can be computationally expensive and may
+require extensive tuning
+Multi-head Attention
+Enhances self-Attention by using
+multiple Attention heads for better
+anomaly detection
+Provides multiple perspectives on the data,
+improving detection robustness
+Increases model complexity and computational
+requirements
+GAN-Transformer
+Combines generative adversarial networks (GANs) with Transformers for
+detecting and simulating anomalies
+Generates realistic anomalies, enhancing detection robustness
+High complexity and requires extensive training time
+3.1. Attention-based methods
+An Attention Transformer is a DL model that processes data through a mechanism known as "Attention," allowing the model
+to weigh the importance of different parts of input data differently. It excels in understanding context and relationships within data,
+making it highly effective for NLP tasks.
+In computer security, Attention Transformers can enhance threat detection, anomaly detection, and phishing email identification
+by learning to recognize subtle patterns and anomalies in data that traditional methods might miss. In a simplified form, the Attention
+mechanism can be represented by the equation [15]:
+𝐴𝑡𝑡𝑒𝑛𝑡𝑖𝑜𝑛(𝑄, 𝐾, 𝑉 ) = 𝑠𝑜𝑓 𝑡𝑚𝑎𝑥(𝑄𝐾𝑇
+√
+𝑑𝑘
+)
+.𝑉 (5)
+In this mechanism, 𝑄, 𝐾, and 𝑉 represent queries, keys, and values, respectively. Queries are used to direct the Attention
+mechanism’s focus. Keys are part of the input data used to calculate Attention weights, indicating the relevance of different parts
+of the input data. Values are the actual content that, after the application of Attention weights, are aggregated to form the output of
+the Attention mechanism. Additionally, 𝑑𝑘
+denotes the dimension of the keys. This approach enables the model to concentrate on
+the most relevant parts of the data, thereby enhancing the precision and efficiency of security systems through more accurate threat
+identification and reduced false positives. Figure 4 summarizes the existing Attention categories, and their benefits.
+In the architecture of many Transformer-based models, such as those used in IDS tasks, the summation and normalization layer
+as described in Equation 1, and the feedforward neural network (FFNN) as detailed in Equation 6, often accompany the Attention
+layer. The FFNN serves as a vital component for feature transformation within the Attention mechanism. It typically comprises two
+fully connected layers, where the first layer applies the rectified linear unit (ReLU) activation function, promoting non-linearity,
+and the second layer operates without an activation function. Mathematically, the FFNN can be represented as:
+FFNN(x) = ReLU(x.W1 + b1
+)W2 + b2
+(6)
+Where, 𝑥.𝑊1 +𝑏1
+is the output of the first fully connected layer in a FFNN with weights 𝑊1
+and bias 𝑏1
+, followed by another linear
+transformation with 𝑊2
+and bias 𝑏2
+.
+Several techniques of Attention-based IDS have been recently proposed. For example, [56] combine CNN and gated recurrent
+unit (GRU) along with an Attention mechanism, drawing inspiration from contemporary language models, to develop a novel and
+effective IDS system to tackle SQL injection and cross-site scripting (XSS) attacks. This system is capable of reaching greater
+accuracy levels, requires a smaller dataset for training, and reduces the duration of the training process.
+Self-Attention is a mechanism allowing a model to weigh the importance of different positions within the same input sequence
+for generating a representation. The study [57] introduces the residual 1-D image Transformer (R1DIT) model to address privacy
+and generalization issues in malware traffic classification. It parses network headers without compromising sensitive data, using
+DL and MHA mechanisms to differentiate between malware and benign traffic, enhancing privacy and adaptability to new threats
+like DDoS on transport layer security (TLS). RNN-based cyber-defense approaches are limited by their sequential data processing,
+relying solely on the hidden state from past data, which can lead to overlooked contextual features. Nguyen et al. in their paper [30]
+presents a novel multi-class IDS for vehicle CAN bus security using a Transformer-based Attention network. The fields of the CAN
+bus are described in Figure 5. It surpasses RNN limitations by employing self-Attention for attack classification and replay attack
+Kheddar et al.: Preprint submitted to Elsevier Page 10 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Allows the model to look at
+other positions in the input
+sequence to better encode
+a particular position.
+Considers all parts of
+the input sequence
+when producing the
+output sequence.
+Restricts the focus to a
+subset of input positions
+around a particular point,
+reducing the computational
+cost.
+Runs parallel mechanisms,
+focusing on multiple positions
+and spaces, enhancing
+complex data learning
+capability.
+Involves multiple layers of
+attention, often used to manage
+different levels of granularity in
+the data.
+Allowing the decoder to target
+specific parts of the encoder's
+output, essential for aligning
+input-output sequences.
+Computes scores from query
+and key vectors, scaled by key
+dimensionality's square root,
+stabilizing gradients during
+training.
+Uses extra information, like the
+decoder's state in sequence-tosequence models, to adjust its
+focus based on input and output
+context.
+Conditional Attention
+Attention categories
+Hierarchical Attention Scaled dot-product Attention
+Self-Attention Local (hard) Attention Global (soft) Attention Multi-head Attention Cross-Attention
+CANINE Attention
+It can be utilized in specialized
+domains where traditional
+tokenization may not be
+suitable, such as processing
+data in the form of payloads.
+[6], [39], [46], [56-58], [60-61], [78-79],
+[99-100], [102], [115], [122-128]
+[30], [59], [63], [101], [116],
+BERT and GPT variants, T5 CANINE Transformer [103] Multiple layers of attention
+Self-Attention, and MHA
+Sparse, and Linformer
+Self-Attention, and MHA Encoder-decoder, and ViT [62]
+Figure 4: Visual guide to attention types in seq2seq models, illustrating how focus shifts with input and output, along with their respective
+related works. The primary components of self-attention and its respective multi-head attention (MHA) are scaled dot-product and global
+(soft) attentions. Hierarchical attention constructs multiple layers of attention. Local hard attention is the main component of Sparse
+Transformer and Linformer. Cross-attention is a key component of encoder-decoder models and ViT Transformers. Conditional attention
+is central to many LLM models such as BERT, GPT variants, and T5. CANINE attention is unique to the CANINE Transformer, where
+tokenization principles are not adhered to or realized.
+detection, through the aggregation of sequential CAN IDs, without requiring message labeling. The model also utilizes transfer
+learning (TL) to enhance performance on small datasets from diverse car models. The work in [58], utilizes four advanced algorithms
+for intrusion detection: LightGBM, XGBoost, CatBoost, and a MHA Transformer. The effectiveness of their proposed method
+was assessed using a well-known dataset known as CICIDS-2017. The Transformer architecture slightly surpasses LightGBM,
+XGBoost, and CatBoost in accuracy and efficiency, making it the preferred choice for performance. In [59], Transformer utilizing
+self-Attention has been used to to capture temporal characteristics in order to improve network security when facing data imbalance
+issue.
+ID
+I
+D
+E
+r0 DLC Data CRC
+R
+T
+R
+S
+O
+F
+ACK
+E
+O
+F
+Data frame
+Arbitration Control field
+1 11 1 1 1 4 0-64 15 1 7
+Figure 5: Format of CAN data frame with bit-lengths for each field.
+DNN models often produce a high number of incorrect predictions in unbalanced intrusion datasets, particularly affecting
+minority classes. The authors in [60] aim to overcome the mentioned DNN limitations through the strategic combination of decision
+tree (DT) algorithms and feature tokenizer-Transformers based on MHAs. Initially, a DT algorithm distinguishes between normal
+and malicious traffic. Then, the Transformer categorizes the malicious traffic to pinpoint the specific type of attack. Moving forward,
+IoT devices face threats like data theft and DDoS attacks, leading to costly security breaches. There’s a high demand for robust IDS.
+Traditional models often fail to detect varied attack types due to limited adaptability. Ahmed et al. [61] introduce an IDS based on
+a MHA-based Transformer mechanism, showing significant improvements in accuracy, precision, recall, and F-score compared to
+LSTM and RNN models.
+Cross-Attention enables a model to attend to different positions in another sequence, facilitating interaction between two distinct
+sequences for tasks like translation or summarization. In the context of cyber-security, the Denseformer model, proposed in [62],
+integrates multiple Transformer-like elements into a multi-layered architecture, featuring encoder and decoder sub-layers with both
+self and cross-Attention mechanisms. It distinctively utilizes cross-fusion in multi-branch structures, functioning as an Attention
+network within dense layers to more effectively identify feature correlations. This leads to improved generalization and cyberattack
+detection, achieving an accuracy of 85.65% on the NSL-KDD dataset. In [63], Attention has been used after the consolidation of
+alerts, based on a threshold, for the prediction of attacks in a multi-stage offensive.
+3.2. CNN/LSTM-Transformer-based methods
+A CNN-Transformer combines the strengths of CNNs and Transformers, two powerful neural network architectures used in
+DL. CNNs excel in processing structured grid data like images, efficiently capturing local dependencies through convolutional
+Kheddar et al.: Preprint submitted to Elsevier Page 11 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+operations. They are renowned for their ability to detect features and patterns at various levels of abstraction, making them
+pivotal in computer vision (CV) tasks. On the other hand, Transformers leverage self-Attention mechanisms to model long-range
+dependencies, excelling in handling sequential data such as text and time series. They have revolutionized NLP and are increasingly
+applied across various domains. By integrating CNNs for effective feature extraction and spatial hierarchy with Transformers’
+capability to model complex data relationships, CNN-Transformers aim to harness the advantages of both architectures. This synergy
+enables more robust and efficient learning, particularly in tasks requiring Attention to both local and global data structures, such
+as advanced image recognition, object detection, and beyond. The possible configurations of CNN-Transformers are illustrated
+in Figure 6. CNN-Transformers, an innovative architectural fusion, have recently garnered Attention in the realm of IDS. This
+advanced merger harnesses the strengths of CNNs and Transformers to enhance detection accuracy and efficiency. For example, in
+[64], feature subsets covering multiple spaces are developed using CNN to enhance the spatial distribution of samples. Subsequently,
+the Transformer is employed to establish connections between features and to determine essential attributes, including the temporal
+and detailed aspects of the features, culminating in the successful detection of intrusion activities. Similarly, the work in [65] presents
+a hybrid neural network model aiming to improve feature extraction and detection effectiveness in traffic analysis. It combines dense
+CNNs and Transformers for feature fusion and time sequence extraction. Results on the CIC-IDS2018 dataset show 98% accuracy,
+surpassing existing models in performance metrics. Moving on, the study referenced in [66] employs 1D CNN and time series
+Transformer architectures to address the challenges posed by RNNs related to computational complexity and detection performance,
+particularly due to issues of information loss. The performance assessment on the CICDDoS2019 and CSE-CIC-IDS2018 datasets
+showed outstanding results, with the evaluation metrics mostly falling between 98.07% and 99.99%.
+Classification
+Pre-processing
+(a)
+Dataset
+Classification
+Pre-processing
+(b)
+Dataset
+M
+M
+M
+Classification
+Pre-processing
+(c)
+Dataset
+M
+Classification
+Pre-processing
+(d)
+Dataset
+Classification
+Pre-processing
+Dataset
+M
+(e)
+CNN
+Classification
+Pre-processing
+(f)
+Dataset
+CNN
+CNN
+Classification
+Pre-processing
+(g)
+Dataset
+M
+M Merge
+M
+CNN
+CNN
+Transformer
+CNN
+CNN
+CNN
+CNN
+CNN
+CNN
+Transformer
+CNN CNN
+CNN
+CNN
+CNN
+CNN
+Transformer
+Transformer
+Transformer
+CNN
+CNN
+CNN
+CNN
+CNN
+Transformer
+Transformer
+Transformer
+Transformer
+Transformer
+CNN
+Transformer
+Transformer
+Transformer
+Figure 6: Various configurations of CNN-Transformer mechanisms include: (a) CNN and Transformer alternated; (b) One-by-one CNNTransformer feature fusion; (c) CNN combined with multi-scale Transformer feature fusion; (d) A sequence of CNN followed by a single
+Transformer; (e) A sequence of CNN followed by the last CNN and a single Transformer feature fusion; (f) Sequential integration of
+multi-scale CNN and Transformer feature fusion; (g) Specific-scale CNN with parallel Transformer feature fusion.
+Kheddar et al.: Preprint submitted to Elsevier Page 12 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Researchers have proposed numerous SOTA methods that combine CNN with LSTM to form hybrid schemes like CNN-LSTM,
+applied in various research fields including IDS [67], among others. These combinations have proven effective in enhancing overall
+accuracy. However, to handle long dependencies, researchers have increasingly either added Transformers or replaced LSTMs with
+Transformers. Wang et al. [39] suggest a model for detecting intrusions by integrating the pre-trained ResNet model, MHA-based
+Transformer, and bidirectional LSTM models into a single framework that captures both spatial and temporal characteristics of
+network traffic, leveraging their robust capabilities in learning data representations. This approach significantly reduces the time
+required to process complex, high-dimensional intrusion data through DL techniques. The objective is to address challenges in
+IDSs, such as inadequate feature extraction and imprecise classification with complex, nonlinear, and high-dimensional data. To
+ensure a balanced dataset, the SMOTE has been utilized for preprocessing.
+The developed Transformer-based model, referred to as XTM [68], aims to accurately detect and locate data breaches in realtime settings. This model, integrating Transformer and LSTM technologies, marks the first attempt to evaluate the effectiveness of
+Transformer models in the smart grid research field, achieving excellent detection accuracy for the IEEE-14 bus system.
+In their research, Ding et al. [69] proposed a method for securing Internet traffic, applicable to both IPv4 and IPv6. This method
+utilizes a multi-frequency LSTM alongside a multi-frequency Transformer module, each comprising layers designed to process
+high-frequency and low-frequency data. This approach enables the detection of temporal details as well as the frequency of attacks
+by analyzing Internet traffic patterns as a combination of sequential data that occurs at different frequencies. The proposed work
+in [55] introduces a method to enhance the analysis of kernel traces, which are sequences of low-level events, by incorporating
+event arguments. This approach involves learning a representation of event names and their arguments using embedding and
+encoding techniques. Evaluation through ablation studies on call-related, process-related, and time-related arguments demonstrates
+its effectiveness. Experiments on web request and server datasets show performance improvements of up to 11.3% on unsupervised
+language modeling tasks using LSTM and Transformer networks. These tasks aid in anomaly detection, neural network pre-training,
+and contextual event representation extraction.
+3.3. ViT-based methods
+ViTs and CNNs offer distinct approaches for analyzing visual data. ViTs utilize the Transformer architecture to process images
+as sequences of patches, applying self-Attention mechanisms to understand global relationships within the image. This method
+contrasts with CNNs, which analyze images using convolutional filters that focus on local features and incrementally expand their
+understanding to more complex patterns. In other words, ViTs model relationships across the entire image using Attention, enabling
+dynamic focus on pertinent areas, whereas CNNs build a hierarchical understanding of local features through successive layers.
+Consequently, ViTs might perform better in scenarios requiring a comprehend of the global context but usually need more data
+and computational power for training. In contrast, CNNs excel at efficiently learning spatial hierarchies but may not capture longdistance dependencies as effectively as ViTs. Figure 7 illustrate a basic structure of ViT Transformers. For example, [70] proposed
+architecture combines a feature fusion network with a ViT, enhancing the overall DL model’s ability to handle imbalanced datasets
+and reducing the amount of sample data required for training. The authors in [71] suggest an IDS approach, wherein they utilize
+image conversion from network data flow, by mapping flow data to RGB values, to generate an RGB image. This image is then
+analyzed using the DT algorithm to pinpoint significant features. Additionally, a ViT classifier is employed to categorize the resulting
+image. Similarly, in their work, Agrafiotis et al. [72] transformed traffic data contained in packet capture (PCAP) files into grayscale
+images. Following this conversion, they utilized ViT techniques for malware classification, subsequently evaluating its performance
+in comparison to that of CNN.
+Linear projection of flattened patches
+Transformer Encoder
+0 * 1 2 3 4 5 6 7 8 9
+Patch+position
+embedding
+MLP
+Head
+- Dog
+- Cat
+- Bird
+Class
+Figure 7: General structure of ViT, where an asterisk (*) indicates an additional learnable class embedding. The multilayer perceptron
+(MLP) is responsible for feature transformation, global context fusion, and classification or regression.
+Kheddar et al.: Preprint submitted to Elsevier Page 13 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+The aim of the work in [73] is to convert intrusion detection into a multiclass classification task for identifying intrusion events. In
+this research, the authors introduce a method that utilizes image encoding coupled with the shifted windows Transformer (SwinT)
+model from computer vision for pattern recognition. Specifically, timing signals gathered are converted into 2-D images. This
+encoding strengthens the correlation and time dependency among sampling points, while the design of SwinT incorporates window
+and shifted window techniques for multiscale feature extraction. Additionally, they employed the focus loss function to mitigate the
+impact of class imbalance in real-world scenarios.
+Given the constant emergence of new vulnerabilities and unknown attack types, typically only a few samples of these attacks are
+available for analysis, which current detection methods in real systems struggle to handle. To address this issue, the authors in [74]
+suggest a few-shot class-incremental learning approach. This method allows for continuous learning of new attack classes using a
+minimal number of samples. It employs a ViT as a self-supervised feature extractor and a dual-session branch classifier learning
+module. This module includes two phases: the base and the new session branch classifier learning. These phases are designed to
+adapt the parameters of the projection layer for different sessions and implement a fusion strategy to enhance the model’s training
+and inference capabilities.
+3.4. GAN-Transformer-based methods
+The GAN-Transformer is a hybrid model that integrates GANs with Transformer architectures to improve generative tasks across
+various domains. This model is particularly effective in fields where data can be transformed into text or image, allowing for the
+application of established NLP techniques, as well as in image generation. By combining these two powerful technologies, the GANTransformer leverages the strengths of GANs in generating high-fidelity outputs with the Transformer’s ability to handle complex
+data dependencies, thereby enhancing the model’s overall performance in generating sophisticated and contextually relevant outputs.
+Figure 8 illustrates a general concept of utilizing GAN and ViT to improve threat detection in imbalanced network flow data
+conditions.
+Integrating ViTs with GANs involves adapting the traditional GAN framework to leverage the transformer architecture for
+either the generator, the discriminator, or both. While the core objective function of GANs remains the same, the architecture of
+the generator and discriminator changes to incorporate transformers. The core objective function of GANs is min𝐺 max𝐷 𝑉 (𝐷, 𝐺),
+where the value function 𝑉 (𝐷, 𝐺) is given by:
+𝑉 (𝐷, 𝐺) = 𝔼𝑥∼𝑝data(𝑥)
+[log 𝐷(𝑥)] + 𝔼𝑧∼𝑝𝑧
+(𝑧)
+[log(1 − 𝐷(𝐺(𝑧)))] (7)
+Where 𝑝data(𝑥) is the probability distribution of the real data. 𝑝𝑧
+(𝑧) is the probability distribution of the input noise (e.g., a Gaussian
+distribution) fed into the generator. 𝐺(𝑧) is the generator function that maps the noise 𝑧 to the data space. 𝐷(𝑥) is the discriminator
+function that outputs the probability that the input 𝑥 is from the real data distribution. When ViTs are used, the functions 𝐺 and 𝐷
+are replaced with transformer-based models:
+• ViT Generator 𝐺: This transformer-based generator 𝐺 takes a latent vector 𝑧 and produces an image or feature map. The
+output of 𝐺(𝑧) is typically processed by a series of transformer blocks that generate high-quality images or features.
+• ViT Discriminator 𝐷: This transformer-based discriminator 𝐷 takes an image or feature map 𝑥 and outputs a probability
+that the input is from the real data distribution.
+Let 𝐺ViT denote the ViT-based generator and 𝐷ViT denote the ViT-based discriminator. The GAN objective function with ViTs can
+be expressed as min𝐺ViT
+max𝐷ViT
+𝑉 (𝐷ViT, 𝐺ViT), where
+𝑉 (𝐷ViT, 𝐺ViT) = 𝔼𝑥∼𝑝data(𝑥)
+[log 𝐷ViT(𝑥)] + 𝔼𝑧∼𝑝𝑧
+(𝑧)
+[log(1 − 𝐷ViT(𝐺ViT(𝑧)))] (8)
+Although numerous researchers have introduced various GAN-based methodologies to address the time series anomaly detection
+issue, challenges such as model collapse, limited generalization, and low accuracy persist. In this paper [42], the authors introduce
+a dilated convolutional Transformer-based GAN aimed at increasing model accuracy and enhancing its generalization capabilities.
+The method employs multiple generators and a single discriminator to mitigate the problem of mode collapse. Each generator
+features a dilated CNN paired with a Transformer block, which consists of MHA, designed to capture both fine-grained and coarsegrained time series data, thereby boosting the model’s generalization ability. Additionally, a weight-based mechanism is utilized to
+maintain equilibrium among the generators.
+The classification performance for intrusion detection suffers due to imbalanced training data and restricted feature extraction.
+The researchers in [75], introduces a novel method combining a conditional generative adversarial network (CGAN) with BERT, a
+pre-trained language model, for multi-class intrusion detection. This technique addresses the imbalance in attack data by leveraging
+CGAN to augment minority class samples. Additionally, BERT, known for its robust feature extraction capabilities, is integrated
+into the CGAN discriminator to enhance the relationship between input and output, thereby improving detection accuracy through
+adversarial training. Similarly, [76] integrates CGAN with ViT to enhance the accuracy of network traffic data detection, particularly
+when confronted with imbalanced network flow data conditions. Only the encoder segment of the ViT model is utilized.
+3.5. Other Transformer-based methods
+Federated learning (FL) is a decentralized DL approach where model training occurs locally on devices or servers holding
+data. Instead of sending data to a central server, only model updates or gradients are shared. These updates are aggregated to
+Kheddar et al.: Preprint submitted to Elsevier Page 14 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+Balanced data
+Vision
+Transformer
+Class imbalanced data Loss
+Balanced data
+Balanced data
+Random noise Generator
+Discriminator a
+Output
+Feedback
+Generated balanced data
+Figure 8: Illustration of the GAN and Transformer-based framework for anomaly detection when dataset is imbalanced.
+improve the global model, which is then redistributed. This process preserves data privacy, as raw data remains on local devices,
+mitigating privacy risks associated with centralized data storage. FL also enables collaborative model training across distributed
+environments, benefiting from diverse data sources without compromising individual privacy. It finds applications in healthcare,
+finance, and other sectors where data privacy is paramount [77]. Employing Transformers together with FL has been investigated
+by researchers. For example, in [6], a NIDS method employing FL and an enhanced Transformer model, which includes MHA,
+addresses issues of prolonged detection time and low accuracy. Data augmentation and local model analysis enhance detection, with
+final predictions aggregated using a Softmax classifier. Similarly, the work [46] presents FED-IDS, a FL-based IDS that offloads
+learning to vehicular edge nodes. It uses a context-aware Transformer network with MHA to capture the spatial-temporal patterns of
+abnormal and normal vehicular data, and blockchain-managed federated training for secure, distributed, and reliable attack detection.
+Similarly, in [78], the authors claim that existing IDS models have low performance and are typically trained on cloud servers, which
+jeopardizes user privacy and increases detection delay. To address these issues, they present a Transformer-based model to enhance
+IDS performance. Additionally, it integrates 5G technology into smart grid systems and proposes HFed-IDS, a hierarchical FL
+system, to collaboratively train the proposed Transformer-based IDS model and protect user privacy in core networks.
+An N-gram is a contiguous sequence of n items from a given sample of text. It is used instead of a single word because it
+provides valuable context information. Han et al. [79], proposed a novel intrusion detection model called GTID, which leverages
+n-gram frequency and a time-aware Transformer. GTID hierarchically learns traffic features from both packet-level and session-level
+data, minimizing information loss. It processes packet headers and payloads differently to extract packet-level features effectively,
+using n-gram frequency to capture payload context. For session-level features, GTID employs a time-aware Transformer with MHA,
+considering time intervals between packets to learn temporal session features for accurate intrusion detection.
+4. LLM-based methods
+The term LLM is used to differentiate language models by the size of their parameters, specifically those considered large-sized
+pre-trained models. However, the academic community has not reached a formal agreement on the minimum parameter size required
+for a model to be classified as an LLM, as the model’s capacity is closely related to the size of the training data and the overall
+computational resources available [20]. The categories of LLMs can be divided into three types:
+• Encoder-only LLMs: are a type of LLMs that primarily utilize the encoder component of the Transformer architecture
+and focus on understanding and generating representations of the input data. These models excel at tasks that involve
+understanding and classifying text, such as sentiment analysis, named entity recognition, and text classification. Masked
+language modeling (MLM) is a technique used primarily in encoder-only models, like BERT, to train the model on
+understanding context by predicting missing words in a sentence. In MLM, some tokens in the input sequence are randomly
+replaced with a special "[MASK]" token, and the model is trained to predict the original tokens at these masked positions.
+The goal is to maximize the likelihood of predicting the original tokens given the masked sequence. Given an input sequence
+𝑥 = (𝑥1
+, 𝑥2
+,…, 𝑥𝑛
+), where some tokens are masked (replaced with ‘[MASK]‘), the model’s task is to predict the original
+tokens at the masked positions. Let 𝑀 be the set of positions that are masked. For each masked position 𝑖 ∈ 𝑀, the model
+outputs a probability distribution 𝑃 (𝑥𝑖
+∣ 𝑥1
+, 𝑥2
+,…, 𝑥𝑛
+) over the vocabulary. The objective is to maximize the likelihood of
+the original tokens 𝑥𝑖
+at the masked positions. The MLM loss function is defined as:
+MLM = − ∑
+𝑖∈𝑀
+log 𝑃 (𝑥𝑖
+∣ 𝑥1
+, 𝑥2
+, …, 𝑥𝑛
+) (9)
+Where, 𝑃 (𝑥𝑖
+∣ 𝑥1
+, 𝑥2
+,…, 𝑥𝑛
+) is the probability assigned by the model to the actual token 𝑥𝑖 given the entire sequence 𝑥,
+where the model has seen the context around the masked tokens. Cross-Entropy Loss aims to measures how well the model’s
+predicted probability distribution matches the actual token at the masked positions.
+• Decoder-only LLMs: are a type of language model that primarily utilize the decoder component of the Transformer
+architecture. Unlike encoder-only or encoder-decoder models, decoder-only models focus on generating text by predicting
+Kheddar et al.: Preprint submitted to Elsevier Page 15 of 34
+Transformers and Large Language Models for Efficient Intrusion Detection Systems: A Comprehensive Survey
+the next token in a sequence based on the previous tokens. These models are particularly well-suited for tasks involving text
+generation, such as language modeling, dialogue systems, and creative writing.
+In decoder-only LLM, autoregressive modeling is employed to predict the next token in a sequence based on the preceding
+context. This approach is used by models like GPT. The primary loss function used for autoregressive modeling in decoderonly LLMs is the cross-entropy loss. This loss function is designed to maximize the likelihood of the model correctly
+predicting each token in the sequence. For an autoregressive model, given a sequence of tokens 𝑥 = (𝑥1
+, 𝑥2
+,…, 𝑥𝑛
+), the
+model is trained to predict each token 𝑥𝑖
+given the previous tokens (𝑥1
+, 𝑥2
+,…, 𝑥𝑖−1). The cross-entropy loss function is
+defined as:
+CE = −∑𝑛
+𝑖=1
+log 𝑃 (𝑥𝑖
+∣ 𝑥1
+, 𝑥2
+,…, 𝑥𝑖−1) (10)
+Where 𝑃 (𝑥𝑖
+∣ 𝑥1
+, 𝑥2
+,…, 𝑥𝑖−1) is the probability assigned by the model to the actual token 𝑥𝑖
+given the previous tokens
+(𝑥1
+, 𝑥2
+,…, 𝑥𝑖−1). Cross-entropy loss measures the performance of the model by comparing the predicted probability
+distribution to the actual token distribution. The probability of generating the entire sequence 𝑥 in an autoregressive model
+is given by:
+𝑃 (𝑥) = ∏𝑛
+𝑖=1
+𝑃 (𝑥𝑖
+∣ 𝑥1
+, 𝑥2
+,…, 𝑥𝑖−1) (11)
+The training objective is to maximize the likelihood of the sequence 𝑥 being generated, which is equivalent to minimizing
+the negative log-likelihood described in Equation 10.
+• Encoder-decoder LLMs: also known as sequence-to-sequence (seq2seq) models, utilize both the encoder and decoder
+components of the Transformer architecture. These models are designed to transform a sequence of input data into a sequence
+of output data, making them well-suited for tasks where an input sequence needs to be mapped to an output sequence.
+In encoder-decoder LLMs, such as BERT2GPT or T5, autoregressive modeling is used in the decoding phase to generate
+sequences based on the encoded input. The model consists of two main components: (i) An encoder, which processes the
+input sequence and generates context or embeddings. (ii) A decoder, generates the output sequence autoregressively based on
+the encoder’s output and previously generated tokens. For an input sequence 𝑥 = (𝑥1
+, 𝑥2
+,…, 𝑥𝑚) and a target output sequence
+𝑦 = (𝑦1
+, 𝑦2
+,…, 𝑦𝑛
+), the decoder is trained to predict each token 𝑦𝑖
+given the previously generated tokens (𝑦1
+, 𝑦2
+,…, 𝑦𝑖−1) and
+the encoded representation from the encoder. The cross-entropy loss function for autoregressive modeling in encoder-decoder
+LLMs is defined as:
+CE = −∑𝑛
+𝑖=1
+log 𝑃 (𝑦𝑖
+∣ 𝑦1
+, 𝑦2
+,…, 𝑦𝑖−1, Encoder(𝑥)) (12)
+Where 𝑃 (𝑦𝑖
+∣ 𝑦1
+, 𝑦2
+,…, 𝑦𝑖−1, Encoder(𝑥)) is the probability assigned by the decoder to the actual token 𝑦𝑖
+given the previous
+tokens (𝑦1
+, 𝑦2
+,…, 𝑦𝑖−1) and the encoder’s output for the input sequence 𝑥. The probability of generating the target sequence
+𝑦 given the input sequence 𝑥 in an autoregressive manner is given by:
+𝑃 (𝑦 ∣ 𝑥) = ∏𝑛
+𝑖=1
+𝑃 (𝑦𝑖
+∣ 𝑦1
+, 𝑦2
+,…, 𝑦𝑖−1, Encoder(𝑥)) (13)
+The training objective is to maximize the likelihood of the target sequence 𝑦 given the input sequence 𝑥, which is equivalent
+to minimizing the negative log-likelihood described in Equation 12.
+Figure 9 illustrates a taxonomy of the three categories, summarizing the most well-known LLM models for each category.
+LLM can enhance NLP-based computer security solutions, enabling more effective detection and classification of malicious
+content, phishing attempts, and malware. Additionally, GPT LLM can contribute to the development of conversational agents for
+security operations, facilitating quicker responses to security incidents and providing valuable insights into emerging threats. Table
+5 summarizes various research findings on LLMs-based IDS schemes, including the dedicated tasks, comparison methods, datasets
+used, obtained results, and improvements achieved.
