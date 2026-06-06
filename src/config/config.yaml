@@ -1,0 +1,14 @@
+embedding_model:
+  provider: "huggingface_sentence_transformers"
+  model_name: "ibm-granite/granite-embedding-97m-multilingual-r2"
+
+retriever:
+  top_k : 10
+
+llm:
+  provider: "groq"
+  model_name: "groq/compound-mini"
+
+chunking:
+  chunk_size: 1000
+  chunk_overlap: 200
